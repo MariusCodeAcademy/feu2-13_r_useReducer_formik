@@ -1,29 +1,33 @@
 import { useState, useEffect } from 'react';
 
+const initCounter = { value: 0 };
+
 function Counter(props) {
   // sukurti state counterValue
-  const [counterValue, setCounterValue] = useState(0);
+  const [counterState, setCounterState] = useState(initCounter);
 
   // sukurti fn handleUp, handleDown, handleUpBy, handleReset
   function handleUp() {
-    setCounterValue((prevCountValue) => prevCountValue + 1);
+    setCounterState((prevCountState) => ({ value: prevCountState.value + 1 }));
     // setCounterValue(counterValue + 1); // not good
   }
   function handleDown() {
-    setCounterValue((prevCountValue) => prevCountValue - 1);
+    setCounterState((prevCountState) => ({ value: prevCountState.value - 1 }));
   }
   function handleUpBy(howMuch) {
-    setCounterValue((prevCountValue) => prevCountValue + howMuch);
+    setCounterState((prevCountState) => ({
+      value: prevCountState.value + howMuch,
+    }));
   }
   function handleReset() {
-    setCounterValue(0);
+    setCounterState(initCounter);
   }
   // sudeti fn ant mygtuku kad veiktu aplikaicija
 
   return (
     <div className='card counter'>
       <p>Counter</p>
-      <h2>{counterValue}</h2>
+      <h2>{counterState.value}</h2>
       <div className='ctrl'>
         <button onClick={handleUp}>up</button>
         <button onClick={handleDown}>down</button>
