@@ -1,8 +1,17 @@
-//
+import { useReducer } from 'react';
+
+const initFormValues = {
+  email: '',
+  password: '',
+  repeatPassword: '',
+};
+// prisideti argumentus,
+// sukurti switch
+// padaryti kad email reiksme susipildytu ivedant
+function registerReducer() {}
+
 function RegisterForm(props) {
-  const [emailValue, setEmailValue] = useState('');
-  const [passwordValue, setPasswordValue] = useState('');
-  // prisideti state pakartotiniam slaptazodziui
+  const [state, dispatch] = useReducer(registerReducer, initFormValues);
 
   const submitHandler = (e) => {
     // padaryti kad forma neperkrautu psl
@@ -15,18 +24,22 @@ function RegisterForm(props) {
       <h2>Register here</h2>
       <form onSubmit={submitHandler} className='card'>
         <input
-          onChange={(e) => setEmailValue(e.target.value)}
-          value={emailValue}
+          onChange={(e) => dispatch({ type: 'email', payload: e.target.value })}
+          value={state.email}
           type='text'
           placeholder='email'
         />
         <input
           onChange={(e) => setPasswordValue(e.target.value)}
-          value={passwordValue}
+          value={state.password}
           type='password'
           placeholder='password'
         />
-        <input type='password' placeholder='repeat password' />
+        <input
+          value={state.repeatPassword}
+          type='password'
+          placeholder='repeat password'
+        />
         <button type='submit'>Login</button>
       </form>
       {!props.hideDebug && (
