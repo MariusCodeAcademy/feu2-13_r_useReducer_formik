@@ -5,6 +5,7 @@ const initFormValues = {
   password: '',
   repeatPassword: '',
   feedback: '',
+  hideFormSuccess: false,
 };
 // sukurti switch
 // padaryti kad email reiksme susipildytu ivedant
@@ -41,6 +42,10 @@ function RegisterForm(props) {
 
     if (doPasswordsAreEqual) {
       dispatch({ type: 'feedback', payload: 'Passwords match OK' });
+      // 1P. siusti su fetch i https://reqres.in/api/register
+      // objekta kuris turi email ir password
+      // 2P. jei gaunam sekminga atsakyma, paslepti forma ir parodyti sekmes kortele kurioje atspausdinta tokenas ir userio id.
+      // 3P. jei atsakymas nesekmmingas, tai virs formos pranesame kokia klaida is atsakymo.
     } else {
       dispatch({
         type: 'feedback',
