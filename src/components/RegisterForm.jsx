@@ -6,12 +6,15 @@ const initFormValues = {
   repeatPassword: '',
   feedback: '',
   hideFormSuccess: false,
+  formRegisterFeedback: '',
 };
 // sukurti switch
 // padaryti kad email reiksme susipildytu ivedant
 function registerReducer(state, action) {
   console.log('action ===', action);
   switch (action.type) {
+    case 'formSent':
+      return { ...state, formRegisterFeedback: action.payload };
     case 'feedback':
       return { ...state, feedback: action.payload };
     case 'email':
@@ -48,7 +51,16 @@ function RegisterForm(props) {
         email: state.email,
         password: state.password,
       };
-      registerUserFetch(newUserObj);
+      registerUserFetch(newUserObj).then((rez) => {
+        if (rez.error) {
+          // klaida
+          console.log('klaida', rez.error);
+          dispatch({ type: 'formSent', payload: rez.error });
+        } else if (rez.token) {
+          // sekme
+          console.log('sekme', rez.token);
+        }
+      });
       // 2P. jei gaunam sekminga atsakyma, paslepti forma ir parodyti sekmes kortele kurioje atspausdinta tokenas ir userio id.
       // 3P. jei atsakymas nesekmmingas, tai virs formos pranesame kokia klaida is atsakymo.
     } else {
@@ -62,6 +74,7 @@ function RegisterForm(props) {
   return (
     <div>
       <h2>Register here</h2>
+      {state.formRegisterFeedback && <h2>{state.formRegisterFeedback}</h2>}
       <form onSubmit={submitHandler} className='card' autoComplete='off'>
         <input
           onChange={(e) => dispatch({ type: 'email', payload: e.target.value })}
@@ -111,4 +124,5 @@ async function registerUserFetch(userObj) {
   });
   const responseInJs = await resp.json();
   console.log('responseInJs ===', responseInJs);
+  return responseInJs;
 }
