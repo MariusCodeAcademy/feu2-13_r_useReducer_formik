@@ -2,7 +2,9 @@ import { useState, useEffect, useReducer } from 'react';
 
 const initCounter = { value: 0 };
 
-function counterReducer(state, action) {}
+function counterReducer(state, action) {
+  return { value: state.value + 1 };
+}
 
 function Counter(props) {
   // sukurti state counterValue
@@ -13,6 +15,7 @@ function Counter(props) {
   function handleUp() {
     // setCounterState((prevCountState) => ({ value: prevCountState.value + 1 }));
     // setCounterValue(counterValue + 1); // not good
+    dispatch();
   }
   function handleDown() {
     // setCounterState((prevCountState) => ({ value: prevCountState.value - 1 }));
