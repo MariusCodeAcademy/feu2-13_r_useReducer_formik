@@ -6,6 +6,8 @@ function counterReducer(state, action) {
   console.log('action ===', action);
 
   switch (action.type) {
+    case 'UPBY':
+      return { value: state.value + action.payload };
     case 'UP':
       return { value: state.value + 1 };
     case 'DOWN':
@@ -37,6 +39,7 @@ function Counter(props) {
     // setCounterState((prevCountState) => ({
     //   value: prevCountState.value + howMuch,
     // }));
+    dispatch({ type: 'UPBY', payload: howMuch });
   }
   function handleReset() {
     // setCounterState(initCounter);
