@@ -6,20 +6,19 @@ function Counter(props) {
 
   // sukurti fn handleUp, handleDown, handleUpBy, handleReset
   function handleUp() {
-    // TODO: padaryti kodel reikia su anf atnaujinti pvz setTimeout
     setCounterValue((prevCountValue) => prevCountValue + 1);
-    // setCounterValue(counterValue + 1);
+    // setCounterValue(counterValue + 1); // not good
+  }
+  function handleDown() {
+    setCounterValue((prevCountValue) => prevCountValue - 1);
+  }
+  function handleUpBy(howMuch) {
+    setCounterValue((prevCountValue) => prevCountValue + howMuch);
+  }
+  function handleReset() {
+    setCounterValue(0);
   }
   // sudeti fn ant mygtuku kad veiktu aplikaicija
-
-  useEffect(() => {
-    console.log('as pasileidziu kai tik baigia krautis komponentas');
-    setTimeout(() => {
-      setCounterValue((prevCountValue) => prevCountValue + 1);
-    }, 4000);
-  }, []);
-
-  console.log('as esu pries pat jsx');
 
   return (
     <div className='card counter'>
@@ -27,9 +26,9 @@ function Counter(props) {
       <h2>{counterValue}</h2>
       <div className='ctrl'>
         <button onClick={handleUp}>up</button>
-        <button>down</button>
-        <button>up by 10</button>
-        <button>reset</button>
+        <button onClick={handleDown}>down</button>
+        <button onClick={() => handleUpBy(10)}>up by 10</button>
+        <button onClick={handleReset}>reset</button>
       </div>
     </div>
   );
