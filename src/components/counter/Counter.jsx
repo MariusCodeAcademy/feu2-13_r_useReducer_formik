@@ -3,9 +3,13 @@ import { useState, useEffect, useReducer } from 'react';
 const initCounter = { value: 0 };
 
 function counterReducer(state, action) {
-  return { value: state.value + 1 };
+  console.log('action ===', action);
+  if (action.type === 'UP') {
+    return { value: state.value + 1 };
+  } else if (action.type === 'DOWN') {
+    return { value: state.value - 1 };
+  }
 }
-
 function Counter(props) {
   // sukurti state counterValue
   // const [counterState, setCounterState] = useState(initCounter);
@@ -15,10 +19,11 @@ function Counter(props) {
   function handleUp() {
     // setCounterState((prevCountState) => ({ value: prevCountState.value + 1 }));
     // setCounterValue(counterValue + 1); // not good
-    dispatch();
+    dispatch({ type: 'UP' });
   }
   function handleDown() {
     // setCounterState((prevCountState) => ({ value: prevCountState.value - 1 }));
+    dispatch({ type: 'DOWN' });
   }
   function handleUpBy(howMuch) {
     // setCounterState((prevCountState) => ({
