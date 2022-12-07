@@ -1,15 +1,18 @@
-import { useReducer } from 'react';
+import { useReducer, useState } from 'react';
 
 const initFormValues = {
   email: '',
-  password: '123',
+  password: '',
   repeatPassword: '',
+  feedback: '',
 };
 // sukurti switch
 // padaryti kad email reiksme susipildytu ivedant
 function registerReducer(state, action) {
   console.log('action ===', action);
   switch (action.type) {
+    case 'feedback':
+      return { ...state, feedback: action.payload };
     case 'email':
       return {
         ...state,
@@ -27,11 +30,23 @@ function registerReducer(state, action) {
 
 function RegisterForm(props) {
   const [state, dispatch] = useReducer(registerReducer, initFormValues);
+  const [doPasswordsMatch, setDoPasswordsMatch] = useState(false);
 
   const submitHandler = (e) => {
     // padaryti kad forma neperkrautu psl
+    e.preventDefault();
     // patikrinti ar sutampa slaptazodziai
+    setDoPasswordsMatch(state.password === state.repeatPassword);
     // pranesti vartotojui ar sutampa ar ne su tekstu virs formos
+    console.log('doPasswordsMatch ===', doPasswordsMatch);
+    if (doPasswordsMatch) {
+      dispatch({ type: 'feedback', payload: 'Passwords match OK' });
+    } else {
+      dispatch({
+        type: 'feedback',
+        payload: 'please check passwords do not match!!!',
+      });
+    }
   };
 
   return (
@@ -44,6 +59,7 @@ function RegisterForm(props) {
           type='text'
           placeholder='email'
         />
+        <h3>{state.feedback}</h3>
         <input
           onChange={(e) =>
             dispatch({ type: 'password', payload: e.target.value })
@@ -69,6 +85,7 @@ function RegisterForm(props) {
           <p>Email: {state.email}</p>
           <p>Password: {state.password}</p>
           <p>Repeat Password: {state.repeatPassword}</p>
+          <p>Do they match: {doPasswordsMatch.toString()}</p>
         </>
       )}
     </div>
