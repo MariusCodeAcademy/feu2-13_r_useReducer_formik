@@ -27,25 +27,17 @@ function Counter(props) {
 
   // sukurti fn handleUp, handleDown, handleUpBy, handleReset
   function handleUp() {
-    // setCounterState((prevCountState) => ({ value: prevCountState.value + 1 }));
-    // setCounterValue(counterValue + 1); // not good
     dispatch({ type: 'UP' });
   }
   function handleDown() {
-    // setCounterState((prevCountState) => ({ value: prevCountState.value - 1 }));
     dispatch({ type: 'DOWN' });
   }
   function handleUpBy(howMuch) {
-    // setCounterState((prevCountState) => ({
-    //   value: prevCountState.value + howMuch,
-    // }));
     dispatch({ type: 'UPBY', payload: howMuch });
   }
   function handleReset() {
-    // setCounterState(initCounter);
     dispatch({ type: 'RESET' });
   }
-  // sudeti fn ant mygtuku kad veiktu aplikaicija
 
   return (
     <div className='card counter'>
