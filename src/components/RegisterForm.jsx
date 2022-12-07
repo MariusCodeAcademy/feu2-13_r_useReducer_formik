@@ -44,6 +44,11 @@ function RegisterForm(props) {
       dispatch({ type: 'feedback', payload: 'Passwords match OK' });
       // 1P. siusti su fetch i https://reqres.in/api/register
       // objekta kuris turi email ir password
+      const newUserObj = {
+        email: state.email,
+        password: state.password,
+      };
+      registerUserFetch(newUserObj);
       // 2P. jei gaunam sekminga atsakyma, paslepti forma ir parodyti sekmes kortele kurioje atspausdinta tokenas ir userio id.
       // 3P. jei atsakymas nesekmmingas, tai virs formos pranesame kokia klaida is atsakymo.
     } else {
@@ -57,7 +62,7 @@ function RegisterForm(props) {
   return (
     <div>
       <h2>Register here</h2>
-      <form onSubmit={submitHandler} className='card'>
+      <form onSubmit={submitHandler} className='card' autoComplete='off'>
         <input
           onChange={(e) => dispatch({ type: 'email', payload: e.target.value })}
           value={state.email}
@@ -97,3 +102,13 @@ function RegisterForm(props) {
   );
 }
 export default RegisterForm;
+
+async function registerUserFetch(userObj) {
+  const resp = await fetch('https://reqres.in/api/register', {
+    method: 'POST',
+    headers: { 'Content-type': 'application/json' },
+    body: JSON.stringify(userObj),
+  });
+  const responseInJs = await resp.json();
+  console.log('responseInJs ===', responseInJs);
+}
