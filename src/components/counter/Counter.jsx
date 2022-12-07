@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 function Counter(props) {
   // sukurti state counterValue
@@ -8,8 +8,18 @@ function Counter(props) {
   function handleUp() {
     // TODO: padaryti kodel reikia su anf atnaujinti pvz setTimeout
     setCounterValue((prevCountValue) => prevCountValue + 1);
+    // setCounterValue(counterValue + 1);
   }
   // sudeti fn ant mygtuku kad veiktu aplikaicija
+
+  useEffect(() => {
+    console.log('as pasileidziu kai tik baigia krautis komponentas');
+    setTimeout(() => {
+      setCounterValue((prevCountValue) => prevCountValue + 1);
+    }, 4000);
+  }, []);
+
+  console.log('as esu pries pat jsx');
 
   return (
     <div className='card counter'>
