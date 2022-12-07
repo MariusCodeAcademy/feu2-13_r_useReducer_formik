@@ -7,12 +7,15 @@ const initFormValues = {
   feedback: '',
   hideFormSuccess: false,
   formRegisterFeedback: '',
+  formSuccess: { id: '', token: '' },
 };
 // sukurti switch
 // padaryti kad email reiksme susipildytu ivedant
 function registerReducer(state, action) {
   console.log('action ===', action);
   switch (action.type) {
+    case 'formSuccess':
+      return { ...state, formSuccess: action.payload };
     case 'formSent':
       return { ...state, formRegisterFeedback: action.payload };
     case 'feedback':
@@ -59,6 +62,10 @@ function RegisterForm(props) {
         } else if (rez.token) {
           // sekme
           console.log('sekme', rez.token);
+          dispatch({
+            type: 'formSuccess',
+            payload: { id: rez.id, token: rez.token },
+          });
         }
       });
       // 2P. jei gaunam sekminga atsakyma, paslepti forma ir parodyti sekmes kortele kurioje atspausdinta tokenas ir userio id.
@@ -75,32 +82,47 @@ function RegisterForm(props) {
     <div>
       <h2>Register here</h2>
       {state.formRegisterFeedback && <h2>{state.formRegisterFeedback}</h2>}
-      <form onSubmit={submitHandler} className='card' autoComplete='off'>
-        <input
-          onChange={(e) => dispatch({ type: 'email', payload: e.target.value })}
-          value={state.email}
-          type='text'
-          placeholder='email'
-        />
-        <h3>{state.feedback}</h3>
-        <input
-          onChange={(e) =>
-            dispatch({ type: 'password', payload: e.target.value })
-          }
-          value={state.password}
-          type='password'
-          placeholder='password'
-        />
-        <input
-          onChange={(e) =>
-            dispatch({ type: 'repeatPassword', payload: e.target.value })
-          }
-          value={state.repeatPassword}
-          type='password'
-          placeholder='repeat password'
-        />
-        <button type='submit'>Login</button>
-      </form>
+      {!state.formSuccess.token && (
+        <>
+          <form onSubmit={submitHandler} className='card' autoComplete='off'>
+            <input
+              onChange={(e) =>
+                dispatch({ type: 'email', payload: e.target.value })
+              }
+              value={state.email}
+              type='text'
+              placeholder='email'
+            />
+            <h3>{state.feedback}</h3>
+            <input
+              onChange={(e) =>
+                dispatch({ type: 'password', payload: e.target.value })
+              }
+              value={state.password}
+              type='password'
+              placeholder='password'
+            />
+            <input
+              onChange={(e) =>
+                dispatch({ type: 'repeatPassword', payload: e.target.value })
+              }
+              value={state.repeatPassword}
+              type='password'
+              placeholder='repeat password'
+            />
+            <button type='submit'>Login</button>
+          </form>
+        </>
+      )}
+      {state.formSuccess.token && (
+        <>
+          <div className='card'>
+            <h2>Welcome {state.email}</h2>
+            <h4>your id is {state.formSuccess.id}</h4>
+            <p>your token is: {state.formSuccess.token}</p>
+          </div>
+        </>
+      )}
       {!props.hideDebug && (
         <>
           <hr />
