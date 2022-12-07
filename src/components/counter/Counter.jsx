@@ -4,10 +4,18 @@ const initCounter = { value: 0 };
 
 function counterReducer(state, action) {
   console.log('action ===', action);
-  if (action.type === 'UP') {
-    return { value: state.value + 1 };
-  } else if (action.type === 'DOWN') {
-    return { value: state.value - 1 };
+
+  switch (action.type) {
+    case 'UP':
+      return { value: state.value + 1 };
+    case 'DOWN':
+      return { value: state.value - 1 };
+    case 'RESET':
+      return { value: 0 };
+    default:
+      // throw new Error('tokio action tipo nera');
+      console.warn('tokio action tipo nera');
+      return initCounter;
   }
 }
 function Counter(props) {
@@ -32,6 +40,7 @@ function Counter(props) {
   }
   function handleReset() {
     // setCounterState(initCounter);
+    dispatch({ type: 'RESET' });
   }
   // sudeti fn ant mygtuku kad veiktu aplikaicija
 
