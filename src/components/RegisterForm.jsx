@@ -5,12 +5,16 @@ const initFormValues = {
   password: '',
   repeatPassword: '',
   feedback: '',
+  doPasswordsMatch: false,
 };
 // sukurti switch
 // padaryti kad email reiksme susipildytu ivedant
 function registerReducer(state, action) {
   console.log('action ===', action);
   switch (action.type) {
+    case 'passMatch':
+      const arePassTheSame = state.password === state.repeatPassword;
+      return { ...state, doPasswordsMatch: arePassTheSame };
     case 'feedback':
       return { ...state, feedback: action.payload };
     case 'email':
@@ -30,16 +34,16 @@ function registerReducer(state, action) {
 
 function RegisterForm(props) {
   const [state, dispatch] = useReducer(registerReducer, initFormValues);
-  const [doPasswordsMatch, setDoPasswordsMatch] = useState(false);
+  // const [doPasswordsMatch, setDoPasswordsMatch] = useState(false);
 
   const submitHandler = (e) => {
     // padaryti kad forma neperkrautu psl
     e.preventDefault();
     // patikrinti ar sutampa slaptazodziai
-    setDoPasswordsMatch(state.password === state.repeatPassword);
+    dispatch({ type: 'passMatch' });
     // pranesti vartotojui ar sutampa ar ne su tekstu virs formos
-    console.log('doPasswordsMatch ===', doPasswordsMatch);
-    if (doPasswordsMatch) {
+
+    if (state.doPasswordsMatch) {
       dispatch({ type: 'feedback', payload: 'Passwords match OK' });
     } else {
       dispatch({
@@ -85,7 +89,7 @@ function RegisterForm(props) {
           <p>Email: {state.email}</p>
           <p>Password: {state.password}</p>
           <p>Repeat Password: {state.repeatPassword}</p>
-          <p>Do they match: {doPasswordsMatch.toString()}</p>
+          <p>Do they match: {state.doPasswordsMatch.toString()}</p>
         </>
       )}
     </div>
